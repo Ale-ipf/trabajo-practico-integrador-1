@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 
 export const sequelize = new Sequelize("integrador_tlp_db","root", "", {
-    host: localhost,
+    host: "localhost",
     dialect: "mysql",
 });
 
