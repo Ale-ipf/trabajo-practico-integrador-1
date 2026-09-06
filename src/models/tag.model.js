@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../config/database.js";
+import { Article } from "./article.model.js";
 
 export const Tag = sequelize.define(
     "Tag",
@@ -10,4 +11,4 @@ export const Tag = sequelize.define(
             unique: true
         }
     }
-)
+);
