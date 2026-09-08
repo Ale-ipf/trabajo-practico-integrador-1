@@ -5,15 +5,6 @@ import { User } from "./user.model.js";
 export const Profile = sequelize.define(
     "Profile",
     {
-        user_id: {
-            type: DataTypes.STRING(),
-            allowNull: false,
-            unique: true,
-            references: {
-                model: "User",
-                key: "id"
-            }
-        },
         first_name: {
             type: DataTypes.STRING(50),
             allowNull: false

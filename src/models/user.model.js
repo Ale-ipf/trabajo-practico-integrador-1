@@ -7,10 +7,7 @@ export const User = sequelize.define(
         username: {
             type: DataTypes.STRING(20),
             allowNull: false,
-            unique: true,
-            validate: {
-                len: [3, 20],
-            }
+            unique: true
         },
         email: {
             type: DataTypes.STRING(100),
@@ -25,6 +22,9 @@ export const User = sequelize.define(
             type: DataTypes.ENUM("user", "admin"),
             defaultValue: "user",
             allowNull: false
-        }
+        },
+    },
+    {
+    paranoid: true,
     }
 );

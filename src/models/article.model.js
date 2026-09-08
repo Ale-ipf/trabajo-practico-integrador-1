@@ -8,28 +8,17 @@ export const Article = sequelize.define(
         title: {
             type: DataTypes.STRING(20),
             allowNull: false,
-            unique: true
         },
         content: {
             type: DataTypes.STRING(100),
             allowNull: false,
-            unique: true
         },
         excerpt: {
-            type: DataTypes.STRING(255)
+            type: DataTypes.STRING(500)
         },
         status: {
             type: DataTypes.ENUM("published","archived"),
             defaultValue: "published"
-
-        },
-        user_id: {
-            type: DataTypes.ENUM(),
-            allowNull: false,
-            references: {
-                model: "User",
-                key: "id"
-            }
         }
     }
 );
