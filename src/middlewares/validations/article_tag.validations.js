@@ -8,9 +8,9 @@ export const createArticleTagValidations = [
   body('article_id')
     .trim()
     .notEmpty()
-    .withMessage("The article_id cannot be empty")
+    .withMessage("El article_id no puede estar vacío")
     .isInt({ gt: 0 })
-    .withMessage("The article_id must be a number greater than 0")
+    .withMessage("El article_id debe ser un número mas grande que 0")
     .custom(async (article_id, { req }) => {
       try {
         const article = await Article.findOne({
@@ -19,34 +19,34 @@ export const createArticleTagValidations = [
 
         if (!article) {
           return Promise.reject(
-            "There is no article in the DB with that id, try another one"
+            "No se encuentra artículo en la base de datos con ese id, intenta con otro"
           );
         }
-      } catch (err) {
-        console.error("Error checking the existency of the article by id", err);
+      } catch (error) {
+        console.error(error);
         return Promise.reject(
-          "Error checking the existency of the article by id"
+          "Error revisando la existencia del artículo por id"
         );
       }
     }),
   body('tag_id')
     .trim()
     .notEmpty()
-    .withMessage("The tag_id cannot be empty")
+    .withMessage("El tag_id no puede estar vacío")
     .isInt({ gt: 0 })
-    .withMessage("The tag_id must be a number greater than 0")
+    .withMessage("El tag_id debe ser un número mas grande que 0")
     .custom(async (tag_id, { req }) => {
       try {
         const tag = await Tag.findOne({ where: { id: req.body.tag_id } });
 
         if (!tag) {
           return Promise.reject(
-            "There is no tag in the DB with that id, try another one"
+            "No se encuentra la etiqueta en la base de datos con ese id, intenta con otro"
           );
         }
-      } catch (err) {
-        console.error("Error checking the existency of the tag by id", err);
-        return Promise.reject("Error checking the existency of the tag by id");
+      } catch (error) {
+        console.error(error);
+        return Promise.reject("Error revisando la existencia de la etiqueta por id");
       }
     }),
 ];
@@ -55,7 +55,7 @@ export const createArticleTagValidations = [
 export const delteArticleTagValidations = [
   param("articleTagId")
     .isInt({ gt: 0 })
-    .withMessage("The articleTagId must be a number greater than 0")
+    .withMessage("El articleTagId debe ser un número mas grande que 0")
     .custom(async (delteArticleTagValidations, { req }) => {
       try {
         const articleTag = await ArticleTag.findOne({
@@ -64,16 +64,13 @@ export const delteArticleTagValidations = [
 
         if (!articleTag) {
           return Promise.reject(
-            "There is no register in the DB with that id, try another one"
+            "No se encuentra el registro en la base de datos con ese id, intenta con otro"
           );
         }
-      } catch (err) {
-        console.error(
-          "Error checking the existency of the register by articleTagId",
-          err
-        );
+      } catch (error) {
+        console.error(error);
         return Promise.reject(
-          "Error checking the existency of the register by articleTagId"
+          "Error revisando la existencia del registro by articleTagId"
         );
       }
     }),

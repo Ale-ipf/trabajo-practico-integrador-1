@@ -6,47 +6,47 @@ export const updateProfileValidations = [
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("First_name cannot be empty")
+    .withMessage("El nombre no puede estar vacío")
     .isString()
-    .withMessage("First_name must be a string")
+    .withMessage("El nombre debe ser una cadena de caracteres")
     .isLength({ min: 2, max: 50 })
     .withMessage(
-      "First_name must contain at least 5 characters and a maximum of 50"
+      "El nombre debe contener al menos 5 caracteres y un máximo de 50"
     )
     .matches(/^[A-Za-z]+$/)
-    .withMessage("First_name must contain only letters, not numbers or signs"),
+    .withMessage("El nombre debe contener solamente letras, no números o signos"),
   body("lastname")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("Lastname cannot be empty")
+    .withMessage("El apellido nombre no puede estar vacío")
     .isString()
-    .withMessage("Lastname must be a string")
+    .withMessage("El aprllido debe ser una cadena de caracteres")
     .isLength({ min: 2, max: 50 })
     .withMessage(
-      "Lastname must contain at least 5 characters and a maximum of 50"
+      "El apellido debe contener al menos 5 caracteres y un máximo de 50"
     )
     .matches(/^[A-Za-z]+$/)
-    .withMessage("Lastname must contain only letters, not numbers or signs"),
+    .withMessage("El apellido debe contener solamente letras, no números o signos"),
   body("biography")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("Biography cannot be empty")
+    .withMessage("Biografía nombre no puede estar vacío")
     .isString()
-    .withMessage("Biography must be a string")
+    .withMessage("Biografía debe ser una cadena de caracteres")
     .isLength({ max: 500 })
-    .withMessage("Biography cannot exceed 500 characters"),
+    .withMessage("Biografía no puede exceder los 500 caracteres"),
   body("avatar_url")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("The avatar_url cannot be empty")
+    .withMessage("El formato del avatar_url no puede estar vacío")
     .isURL()
-    .withMessage("The avatar_url format is invalid"),
+    .withMessage("El formato del avatar_url es inválido"),
   body("birth_date")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("Birth_date cannot be empty"),
+    .withMessage("La fecha de cumpleaños no puede estar vacío"),
 ];

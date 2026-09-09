@@ -5,22 +5,22 @@ export const createTagValidations = [
   body("name")
     .trim()
     .notEmpty()
-    .withMessage("Name cannot be empty")
+    .withMessage("El nombre no puede estar vacío")
     .isLength({ min: 2, max: 30 })
-    .withMessage("Name must contain at leas 2 characters and a maximum of 30")
+    .withMessage("El nombre debe contener al menos 2 caracteres y un máximo de 30")
     .matches(/^(?=.*[A-Za-z])(?!.*\s)[A-Za-z]+$/)
     .custom(async (name, { req }) => {
       try {
-        const nameExisting = await TagModel.findOne({
+        const nameExisting = await Tag.findOne({
           where: { name: req.body.name },
         });
 
         if (nameExisting) {
-          return Promise.reject("There is already a tag with that name");
+          return Promise.reject("Ya hay un tag con ese nombre");
         }
-      } catch (err) {
-        console.error("Error checking the viability of the name", err);
-        return Promise.reject("Error checking the viability of the name");
+      } catch (error) {
+        console.error(error);
+        return Promise.reject("Error revisando la viabilidad del nombre");
       }
     }),
 ];
@@ -29,19 +29,19 @@ export const createTagValidations = [
 export const getTagValidations = [
   param("id")
     .isInt({ gt: 0 })
-    .withMessage("The id must be a number greater than zero")
+    .withMessage("El id debe ser un número mas grande que cero")
     .custom(async (id, { req }) => {
       try {
-        const tag = await TagModel.findOne({
+        const tag = await Tag.findOne({
           where: { id: req.params.id },
         });
 
         if (!tag) {
-          return Promise.reject("There is no tag in the DB with that ID");
+          return Promise.reject("No se encuentra etiqueta en la base de datos con ese ID");
         }
-      } catch (err) {
-        console.error("Error checking the existency of the tag by id", err);
-        return Promise.reject("Error checking the existency of the tag by id");
+      } catch (error) {
+        console.error(error);
+        return Promise.reject("Error revisando la existencia de la etiqueta por id");
       }
     }),
 ];
@@ -50,41 +50,41 @@ export const getTagValidations = [
 export const updateTagValidations = [
   param("id")
     .isInt({ gt: 0 })
-    .withMessage("The id must be a number greater than zero")
+    .withMessage("El id debe ser un número mas grande que cero")
     .custom(async (id, { req }) => {
       try {
-        const tag = await TagModel.findOne({
+        const tag = await Tag.findOne({
           where: { id: req.params.id },
         });
 
         if (!tag) {
-          return Promise.reject("There is no tag in the DB with that ID");
+          return Promise.reject("No se encuentra etiqueta en la base de datos con ese ID");
         }
-      } catch (err) {
-        console.error("Error checking the existency of the tag by id", err);
-        return Promise.reject("Error checking the existency of the tag by id");
+      } catch (error) {
+        console.error(error);
+        return Promise.reject("Error revisando la existencia de la etiqueta por id");
       }
     }),
   body("name")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("Name cannot be empty")
+    .withMessage("El nombre no puede estar vacío")
     .isLength({ min: 2, max: 30 })
-    .withMessage("Name must contain at leas 2 characters and a maximum of 30")
+    .withMessage("El nombre debe contener al menos 2 caracteres y un máximo de 30")
     .matches(/^(?=.*[A-Za-z])(?!.*\s)[A-Za-z]+$/)
     .custom(async (name, { req }) => {
       try {
-        const nameExisting = await TagModel.findOne({
+        const nameExisting = await Tag.findOne({
           where: { name: req.body.name },
         });
 
         if (nameExisting) {
-          return Promise.reject("There is already a tag with that name");
+          return Promise.reject("Ya hay un tag con ese nombre");
         }
-      } catch (err) {
-        console.error("Error checking the viability of the name", err);
-        return Promise.reject("Error checking the viability of the name");
+      } catch (error) {
+        console.error(error);
+        return Promise.reject("Error revisando la viabilidad del nombre");
       }
     }),
 ];
@@ -93,19 +93,19 @@ export const updateTagValidations = [
 export const deleteTagValidations = [
   param("id")
     .isInt({ gt: 0 })
-    .withMessage("The id must be a number greater than zero")
+    .withMessage("El id debe ser un número mas grande que cero")
     .custom(async (id, { req }) => {
       try {
-        const tag = await TagModel.findOne({
+        const tag = await Tag.findOne({
           where: { id: req.params.id },
         });
 
         if (!tag) {
-          return Promise.reject("There is no tag in the DB with that ID");
+          return Promise.reject("No se encuentra etiqueta en la base de datos con ese ID");
         }
-      } catch (err) {
-        console.error("Error checking the existency of the tag by id", err);
-        return Promise.reject("Error checking the existency of the tag by id");
+      } catch (error) {
+        console.error(error);
+        return Promise.reject("Error revisando la existencia de la etiqueta por id");
       }
     }),
 ];

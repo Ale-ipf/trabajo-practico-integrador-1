@@ -37,7 +37,7 @@ export const createUserValidations = [
     .notEmpty()
     .withMessage("Email no puede ser vacio")
     .isEmail()
-    .withMessage("El formato del email no es valido")
+    .withMessage("El formato del email no es válido")
     .custom(async (email, { req }) => {
       try {
         const emailExisting = await User.findOne({
@@ -49,77 +49,77 @@ export const createUserValidations = [
         }
       } catch (error) {
         console.error(error);
-        return Promise.reject("Error mientras se revisaba la viabilidad the email");
+        return Promise.reject("Error mientras se revisaba la viabilidad del email");
       }
     }),
   body("password")
     .trim()
     .notEmpty()
-    .withMessage("Password cannot be empty")
+    .withMessage("La contraseña no puede estar vacío")
     .isString()
-    .withMessage("Password must be a string")
+    .withMessage("La contraseña debe ser una cadena de caracteres")
     .isLength({ min: 8 })
-    .withMessage("Password must contain at least 8 characters")
+    .withMessage("La contraseña debe contener al menos 8 caracteres")
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/),
   body("role")
     .trim()
     .notEmpty()
-    .withMessage("Role cannot be empty")
+    .withMessage("El rol no puede estar vacío")
     .isIn(["user", "admin"])
-    .withMessage("Role must be either 'user' or 'admin'"),
+    .withMessage("El rol debe ser o bien 'user' or 'admin'"),
   //VALIDACIONES PARA LOS CAMPOS DEL PERFIL
   body("first_name")
     .trim()
     .notEmpty()
-    .withMessage("First_name cannot be empty")
+    .withMessage("El nombre no puede estar vacío")
     .isString()
-    .withMessage("First_name must be a string")
+    .withMessage("El nombre debe ser una cadena de caracteres")
     .isLength({ min: 2, max: 50 })
     .withMessage(
-      "First_name must contain at least 5 characters and a maximum of 50"
+      "El nombre must contain at least 5 characters and a maximum of 50"
     )
     .matches(/^[A-Za-z]+$/)
-    .withMessage("First_name must contain only letters, not numbers or signs"),
+    .withMessage("El nombre must contain only letters, not numbers or signs"),
   body("lastname")
     .trim()
     .notEmpty()
-    .withMessage("Lastname cannot be empty")
+    .withMessage("El apellido no puede estar vacío")
     .isString()
-    .withMessage("Lastname must be a string")
+    .withMessage("El apellido debe ser una cadena de caracteres")
     .isLength({ min: 2, max: 50 })
     .withMessage(
-      "Lastname must contain at least 5 characters and a maximum of 50"
+      "El apellido must contain at least 5 characters and a maximum of 50"
     )
     .matches(/^[A-Za-z]+$/)
-    .withMessage("Lastname must contain only letters, not numbers or signs"),
+    .withMessage("El apellido must contain only letters, not numbers or signs"),
   body("biography")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("Biography cannot be empty")
+    .withMessage("Biografía no puede estar vacío")
     .isString()
-    .withMessage("Biography must be a string")
+    .withMessage("Biografía debe ser una cadena de caracteres")
     .isLength({ max: 500 })
-    .withMessage("Biography cannot exceed 500 characters"),
+    .withMessage("Biografía cannot exceed 500 characters"),
   body("avatar_url")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("The avatar_url cannot be empty")
+    .withMessage("The avatar_url no puede estar vacío")
     .isURL()
-    .withMessage("The avatar_url format is invalid"),
+    .withMessage("El formato del avatar_url es inválido"),
   body("birth_date")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("Birth_date cannot be empty"),
+    .withMessage("La fecha de cumpleaños no puede estar vacío"),
 ];
 
 //VALIDACIONES PARA TRAER UN SOLO USUARIO
 export const getUserValidations = [
   param("id")
     .isInt({ gt: 0 })
-    .withMessage("The id must be a number greater than 0")
+    .withMessage("El id debe ser un número mas grande que 0")
     .custom(async (id, { req }) => {
       try {
         const userExisting = await User.findOne({
@@ -127,11 +127,11 @@ export const getUserValidations = [
         });
 
         if (!userExisting) {
-          return Promise.reject("There is no user in the DB with that id");
+          return Promise.reject("No se encuentra usuario en la base de datos con ese id");
         }
-      } catch (err) {
-        console.error("Error checking the existency of the user by id", err);
-        return Promise.reject("Error checking the existency of the user by id");
+      } catch (error) {
+        console.error(error);
+        return Promise.reject("Error revisando la existencia del usuario por id");
       }
     }),
 ];
@@ -142,15 +142,15 @@ export const updateUerValidations = [
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("Username cannot be empty")
+    .withMessage("El nombre de usuario no puede estar vacío")
     .isString()
-    .withMessage("Username must be a string")
+    .withMessage("El nombre de usuario debe ser una cadena de caracteres")
     .isLength({ min: 3, max: 20 })
     .withMessage(
-      "Username must contain at least 3 characters and a maximun of 20"
+      "El nombre de usuario must contain at least 3 characters and a maximun of 20"
     )
     .matches(/^[a-zA-Z0-9]/)
-    .withMessage("Username must be alphanumeric")
+    .withMessage("El nombre de usuario debe ser alfanumérico")
     .custom(async (username, { req }) => {
       try {
         const usernameExisting = await User.findOne({
@@ -158,22 +158,21 @@ export const updateUerValidations = [
         });
 
         if (usernameExisting) {
-          return Promise.reject("Username already exists, try another one");
+          return Promise.reject("El nombre de usuario ya existe, intenta con otro");
         }
       } catch (error) {
         console.error(error);
         return Promise.reject(
-          "Error mientras se revisaba la viabilidad username"
-        );
+          "Error mientras se revisaba la viabilidad del nombre de usuario");
       }
     }),
   body("email")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("Email cannot be empty")
+    .withMessage("Email no puede estar vacío")
     .isEmail()
-    .withMessage("The email format is not valid")
+    .withMessage("El formato del email no es válido")
     .custom(async (email, { req }) => {
       try {
         const emailExisting = await User.findOne({
@@ -181,33 +180,33 @@ export const updateUerValidations = [
         });
 
         if (emailExisting) {
-          return Promise.reject("That email already exists, try another one");
+          return Promise.reject("Ese email ya existe, intenta con otro");
         }
-      } catch (err) {
-        console.error("Error checking the viability of the email", err);
-        return Promise.reject("Error mientras se revisaba la viabilidad email");
+      } catch (error) {
+        console.error(error);
+        return Promise.reject("Error mientras se revisaba la viabilidad del email");
       }
     }),
   body("password")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("Password cannot be empty")
+    .withMessage("La contraseña no puede estar vacío")
     .isString()
-    .withMessage("Password must be a string")
+    .withMessage("La contraseña debe ser una cadena de caracteres")
     .isLength({ min: 8 })
-    .withMessage("Password must contain at least 8 characters")
+    .withMessage("La contraseña debe contener al menos 8 caracteres")
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/),
   body("role")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("Role cannot be empty")
+    .withMessage("El rol no puede estar vacío")
     .isIn(["user", "admin"])
-    .withMessage("Role must be either 'user' or 'admin'"),
+    .withMessage("EL Rol debe ser o bien 'user' or 'admin'"),
   param("id")
     .isInt({ gt: 0 })
-    .withMessage("The id must be a number greater than 0")
+    .withMessage("El id debe ser un número mas grande que 0")
     .custom(async (id, { req }) => {
       try {
         const userExisting = await User.findOne({
@@ -215,11 +214,11 @@ export const updateUerValidations = [
         });
 
         if (!userExisting) {
-          return Promise.reject("There is no user in the DB with that id");
+          return Promise.reject("No se encuenta usuario en la base de datos con ese id");
         }
-      } catch (err) {
-        console.error("Error checking the existency of the user by id", err);
-        return Promise.reject("Error checking the existency of the user by id");
+      } catch (error) {
+        console.error(error);
+        return Promise.reject("Error revisando la existencia del usuario por id");
       }
     }),
 ];
@@ -227,7 +226,7 @@ export const updateUerValidations = [
 export const deleteUserValidations = [
   param("id")
     .isInt({ gt: 0 })
-    .withMessage("The id must be a number greater than 0")
+    .withMessage("The id debe ser un número mas grande que 0")
     .custom(async (id, { req }) => {
       try {
         const userExisting = await User.findOne({
@@ -235,11 +234,11 @@ export const deleteUserValidations = [
         });
 
         if (!userExisting) {
-          return Promise.reject("There is no user in the DB with that id");
+          return Promise.reject("No se encuentra usuario en la base de datos con ese id");
         }
-      } catch (err) {
-        console.error("Error checking the existency of the user by id", err);
-        return Promise.reject("Error checking the existency of the user by id");
+      } catch (error) {
+        console.error(error);
+        return Promise.reject("Error revisando la existencia del usuario por id");
       }
     }),
 ];

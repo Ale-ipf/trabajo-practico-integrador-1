@@ -8,38 +8,36 @@ export const createArticleValidations = [
   body("title")
     .trim()
     .notEmpty()
-    .withMessage("Title cannot be empty")
+    .withMessage("El título no puede estar vacío")
     .isLength({ min: 3, max: 200 })
-    .withMessage(
-      "Title must contain at least 3 characters and a maximum of 200"
-    ),
+    .withMessage("El título debe contener al menos 3 caracteres y un maximo de 200"),
   body("content")
     .trim()
     .notEmpty()
-    .withMessage("Content cannot be empty")
+    .withMessage("El contenido no puede estar vacío")
     .isLength({ min: 50 })
-    .withMessage("Content must contain at least 50 characters"),
+    .withMessage("El contenido debe contener al menos 50 caracteres"),
   body("excerpt")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("Excerpt cannot be empty")
+    .withMessage("El extracto no puede estar vacío")
     .isLength({ max: 500 })
-    .withMessage("Excerpt cannot exceed 500 characters"),
+    .withMessage("El extracto no puede exceder los 500 caracteres"),
   body("status")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("Status cannot be empty")
+    .withMessage("El estado no puede estar vacío")
     .isIn(["published", "archived"])
-    .withMessage("Status must be either 'published' or 'archived0'"),
+    .withMessage("El estado debe ser o bien 'published' or 'archived'"),
 ];
 
 //VALIDACIÓN PARA TRSER UN SOLO ARTÍCULO POR SU ID
 export const getArticleValidations = [
   param("id")
     .isInt({ gt: 0 })
-    .withMessage("The id must be a number greater than zero")
+    .withMessage("La id debe ser un número mas grande que cero")
     .custom(async (id, { req }) => {
       try {
         const article = await Article.findOne({
@@ -49,10 +47,10 @@ export const getArticleValidations = [
         if (!article) {
           return Promise.reject("There is no article in the DB with that ID");
         }
-      } catch (err) {
-        console.error("Error checking the existency of the article by id", err);
+      } catch (error) {
+        console.error(error);
         return Promise.reject(
-          "Error checking the existency of the article by id"
+          "Error revisando la existencia del artículo por id"
         );
       }
     }),
@@ -62,7 +60,7 @@ export const getArticleValidations = [
 export const getArticleUserById = [
   param("id")
     .isInt({ gt: 0 })
-    .withMessage("The id must be a number greater than 0")
+    .withMessage("La id debe ser un número mas grande que 0")
     .custom(async (id, { req }) => {
       try {
         const userLogged = req.userLogged;
@@ -72,11 +70,11 @@ export const getArticleUserById = [
         });
 
         if (!articleExisting) {
-          return Promise.reject("There is no article in the DB with that id");
+          return Promise.reject("No se encuentra artículo en la base de datos con ese id");
         }
-      } catch (err) {
-        console.error("Error checking the existency of the user by id", err);
-        return Promise.reject("Error checking the existency of the user by id");
+      } catch (error) {
+        console.error(error);
+        return Promise.reject("Error revisando la existencia del usuario por id");
       }
     }),
 ];
@@ -86,7 +84,7 @@ export const updateArticleValidations = [
   //PARAM
   param("id")
     .isInt({ gt: 0 })
-    .withMessage("The id must be a number greater than zero")
+    .withMessage("La id debe ser un número mas grande que cero")
     .custom(async (id, { req }) => {
       try {
         const article = await Article.findOne({
@@ -94,12 +92,12 @@ export const updateArticleValidations = [
         });
 
         if (!article) {
-          return Promise.reject("There is no article in the DB with that ID");
+          return Promise.reject("No se encuentra artículo en la base de datos con ese ID");
         }
-      } catch (err) {
-        console.error("Error checking the existency of the article by id", err);
+      } catch (error) {
+        console.error(error);
         return Promise.reject(
-          "Error checking the existency of the article by id"
+          "Error revisando la existencia del artículo por id"
         );
       }
     }),
@@ -108,30 +106,30 @@ export const updateArticleValidations = [
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("Title cannot be empty")
+    .withMessage("El título no puede estar vacío")
     .isLength({ min: 3, max: 200 })
     .withMessage(
-      "Title must contain at least 3 characters and a maximum of 200"
+      "El título debe contener al menos 3 caracteres y un maximo de 200"
     ),
   body("content")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("Content cannot be empty")
+    .withMessage("El contenido no puede estar vacío")
     .isLength({ min: 50 })
-    .withMessage("Content must contain at least 50 characters"),
+    .withMessage("El contenido debe contener al menos 50 caracteres"),
   body("excerpt")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("Excerpt cannot be empty")
+    .withMessage("El extracto no puede estar vacío")
     .isLength({ max: 500 })
-    .withMessage("Excerpt cannot exceed 500 characters"),
+    .withMessage("El extracto no puede exceder los 500 caracteres"),
   body("status")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("Status cannot be empty")
+    .withMessage("El estado no puede estar vacío")
     .isIn(["published", "archived"])
-    .withMessage("Status must be either 'published' or 'archived'"),
+    .withMessage("El estado debe o bien 'published' or 'archived'"),
 ];
