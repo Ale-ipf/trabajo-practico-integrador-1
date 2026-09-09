@@ -19,10 +19,8 @@ export const authMiddleware = async (req, res, next) => {
     req.userLogged = decoded;
 
     next();
-  } catch (err) {
-    console.error("Server error while checking the authentication", err);
-    return res.status(500).json({
-      message: "Server error while checking the authentication",
-    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error interno del servidor"});
   }
 };

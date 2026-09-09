@@ -1,5 +1,5 @@
 import { Article } from "../models/article.model.js";
-import { matchedData } from "express-validate";
+import { matchedData } from "express-validator";
 import { User } from "../models/user.model.js";
 
 //FUNCION PARA CREAR UN ARTÍCULO

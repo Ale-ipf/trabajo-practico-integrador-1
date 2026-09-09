@@ -10,7 +10,7 @@ export const getAllUsers = async (req, res) => {
                 exclude: ["password"]
             },
             include: {
-                model: Profiler,
+                model: Profile,
                 as: "profile"
             }
         });
