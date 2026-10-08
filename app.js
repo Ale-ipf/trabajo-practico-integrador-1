@@ -11,7 +11,7 @@ import articleTagsRouter from "./src/routes/article_tag.routes.js";
 import tagRouter from "./src/routes/tag.routes.js";
 
 import { startDB } from "./src/config/database.js";
-startDB();
+import { assertJwtSecretConfigured } from "./src/helpers/jwt.helpers.js";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -28,6 +28,15 @@ app.use(cookieParser());
 
 app.use("/", authRouter, userRouter, articleRouter, articleTagsRouter, tagRouter);
 
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en el puerto http://localhost:${PORT}`);
+const startServer = async () => {
+  assertJwtSecretConfigured();
+  await startDB();
+  app.listen(PORT, () => {
+    console.log(`Servidor corriendo en el puerto http://localhost:${PORT}`);
+  });
+};
+
+startServer().catch((error) => {
+  console.error("No se pudo iniciar el servidor", error);
+  process.exitCode = 1;
 });

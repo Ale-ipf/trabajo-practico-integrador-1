@@ -2,6 +2,20 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
+const getJwtSecret = () => {
+  const secret = process.env.JWT_SECRET;
+
+  if (!secret) {
+    throw new Error("La variable de entorno JWT_SECRET no está configurada");
+  }
+
+  return secret;
+};
+
+export const assertJwtSecretConfigured = () => {
+  getJwtSecret();
+};
+
 //FUNCIÓN PARA GENERAR UN TOKEN
 export const generateToken = async (user) => {
   const token = jwt.sign(
@@ -11,7 +25,7 @@ export const generateToken = async (user) => {
       password: user.password,
       role: user.role
     },
-    process.env.JWT_SECRET,
+    getJwtSecret(),
     {
       expiresIn: "1h",
     }
@@ -23,7 +37,7 @@ export const generateToken = async (user) => {
 //FUNCION PARA VERIFICAR UN TOKEN
 export const verifyToken = (token) => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, getJwtSecret());
 
     return decoded;
   } catch (error) {

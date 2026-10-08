@@ -1,6 +1,20 @@
 import { body, param } from "express-validator";
 import { User } from "../../models/user.model.js";
 
+export const loginValidations = [
+  body("username")
+    .trim()
+    .notEmpty()
+    .withMessage("El nombre de usuario no puede estar vacío")
+    .isString()
+    .withMessage("El nombre de usuario debe ser una cadena de caracteres"),
+  body("password")
+    .notEmpty()
+    .withMessage("La contraseña no puede estar vacía")
+    .isString()
+    .withMessage("La contraseña debe ser una cadena de caracteres"),
+];
+
 //VALIDACIONES PARA CREAR UN USUARIO Y PERFIL
 export const createUserValidations = [
   //VALIDACIONES PARA LOS CAMPOS DEL USUARIO
@@ -12,9 +26,9 @@ export const createUserValidations = [
     .withMessage("El nombre de usuario debe ser una cadena de caracteres")
     .isLength({ min: 3, max: 20 })
     .withMessage(
-      "El nombre de usuario debe contener al menos 3 caracteres y un maximo de 20"
+      "El nombre de usuario debe contener al menos 3 caracteres y un máximo de 20"
     )
-    .matches(/^[a-zA-Z0-9]/)
+    .matches(/^[a-zA-Z0-9]+$/)
     .withMessage("El nombre de usuario debe ser alfanumérico")
     .custom(async (username, { req }) => {
       try {
@@ -35,7 +49,7 @@ export const createUserValidations = [
   body("email")
     .trim()
     .notEmpty()
-    .withMessage("Email no puede ser vacio")
+    .withMessage("El email no puede estar vacío")
     .isEmail()
     .withMessage("El formato del email no es válido")
     .custom(async (email, { req }) => {
@@ -55,18 +69,21 @@ export const createUserValidations = [
   body("password")
     .trim()
     .notEmpty()
-    .withMessage("La contraseña no puede estar vacío")
+    .withMessage("La contraseña no puede estar vacía")
     .isString()
     .withMessage("La contraseña debe ser una cadena de caracteres")
     .isLength({ min: 8 })
     .withMessage("La contraseña debe contener al menos 8 caracteres")
-    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/),
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/)
+    .withMessage(
+      "La contraseña debe incluir al menos una minúscula, una mayúscula y un número"
+    ),
   body("role")
     .trim()
     .notEmpty()
     .withMessage("El rol no puede estar vacío")
     .isIn(["user", "admin"])
-    .withMessage("El rol debe ser o bien 'user' or 'admin'"),
+    .withMessage("El rol debe ser 'user' o 'admin'"),
   //VALIDACIONES PARA LOS CAMPOS DEL PERFIL
   body("first_name")
     .trim()
@@ -76,10 +93,10 @@ export const createUserValidations = [
     .withMessage("El nombre debe ser una cadena de caracteres")
     .isLength({ min: 2, max: 50 })
     .withMessage(
-      "El nombre must contain at least 5 characters and a maximum of 50"
+      "El nombre debe contener entre 2 y 50 caracteres"
     )
     .matches(/^[A-Za-z]+$/)
-    .withMessage("El nombre must contain only letters, not numbers or signs"),
+    .withMessage("El nombre solo puede contener letras"),
   body("lastname")
     .trim()
     .notEmpty()
@@ -88,31 +105,31 @@ export const createUserValidations = [
     .withMessage("El apellido debe ser una cadena de caracteres")
     .isLength({ min: 2, max: 50 })
     .withMessage(
-      "El apellido must contain at least 5 characters and a maximum of 50"
+      "El apellido debe contener entre 2 y 50 caracteres"
     )
     .matches(/^[A-Za-z]+$/)
-    .withMessage("El apellido must contain only letters, not numbers or signs"),
+    .withMessage("El apellido solo puede contener letras"),
   body("biography")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("Biografía no puede estar vacío")
+    .withMessage("La biografía no puede estar vacía")
     .isString()
     .withMessage("Biografía debe ser una cadena de caracteres")
     .isLength({ max: 500 })
-    .withMessage("Biografía cannot exceed 500 characters"),
+    .withMessage("La biografía no puede superar los 500 caracteres"),
   body("avatar_url")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("The avatar_url no puede estar vacío")
+    .withMessage("La URL del avatar no puede estar vacía")
     .isURL()
     .withMessage("El formato del avatar_url es inválido"),
   body("birth_date")
     .optional()
     .trim()
     .notEmpty()
-    .withMessage("La fecha de cumpleaños no puede estar vacío"),
+    .withMessage("La fecha de nacimiento no puede estar vacía"),
 ];
 
 //VALIDACIONES PARA TRAER UN SOLO USUARIO

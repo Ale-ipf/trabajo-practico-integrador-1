@@ -27,10 +27,17 @@ export const createArticle = async (req, res) => {
 export const getAllArticles = async (req, res) => {
     try {
         const articles = await Article.findAll({
-        attributes: {
-            exclude: ["content"],
-        },
-    });
+            attributes: {
+                exclude: ["content"],
+            },
+            include: [
+                {
+                    model: User,
+                    as: "author",
+                    attributes: ["id", "username"],
+                },
+            ],
+        });
 
     if (articles.length === 0) {
         return res.status(404).json({
@@ -52,14 +59,16 @@ export const getAllArticles = async (req, res) => {
 //FUNCIÓN PARA LISTAR UN ARTÍCULO
 export const getArticle = async (req, res) => {
     try {
-        const article = await Article.findOne(
-        { where: { id: req.params.id } },
-        {
-            attributes: {
-            exclude: ["content"],
-            },
-        }
-    );
+        const article = await Article.findOne({
+            where: { id: req.params.id },
+            include: [
+                {
+                    model: User,
+                    as: "author",
+                    attributes: ["id", "username"],
+                },
+            ],
+        });
 
     return res.status(200).json({ message: "Artículo encontrado",article});
     } catch (error) {

@@ -1,9 +1,19 @@
-import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 import { Profile } from "../models/profile.model.js";
 import { generateToken } from "../helpers/jwt.helpers.js";
 import { hashPassword, comparePassword } from "../helpers/bcrypt.helper.js";
 
+const getAuthCookieOptions = () => {
+  const isProduction = process.env.NODE_ENV === "production";
+  const sameSite = process.env.COOKIE_SAME_SITE || (isProduction ? "none" : "lax");
+
+  return {
+    httpOnly: true,
+    secure: process.env.COOKIE_SECURE === "true" || isProduction || sameSite === "none",
+    sameSite,
+    path: "/",
+  };
+};
 
 //FUNCION PARA REGISTRAR UN USUARIO
 export const register = async (req, res) => {
@@ -25,7 +35,11 @@ export const register = async (req, res) => {
 
     //AUTOMATICAMENTE CREO UN PERFIL
     await Profile.create({
-      first_name, lastname, biography, avatar_url, birth_date,
+      first_name,
+      last_name: lastname,
+      biography,
+      avatar_url,
+      birth_date,
       user_id: user.id, //LE ASIGNO EL ID DEL USUARIO QUE SE CREÓ MÁS ARRIBA
     });
 
@@ -35,7 +49,7 @@ export const register = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      message: "Error interno del interior",
+      message: "Error interno del servidor",
     });
   }
 };
@@ -51,14 +65,14 @@ export const login = async (req, res) => {
       },
       include: {
         model: Profile,
-        attributes: ["first_name", "lastname"],
+        attributes: ["first_name", "last_name"],
         as: "profile",
       },
     });
 
     //SI NO EXISTE, ARROJO UN ERROR
     if (!user) {
-      return res.status(404).json({ message: "Credenciales incorrectas"});
+      return res.status(401).json({ message: "Usuario o contraseña incorrectos" });
     }
 
     //COMPARO LA CONTRASEÑA CON LA CONTRASEÑA HASHEADA
@@ -66,7 +80,7 @@ export const login = async (req, res) => {
 
     //SI LA CONTRASEÑA NO ES LA MISMA, TIRO UN ERROR
     if (!validPassword) {
-      return res.status(401).json({ message: 'Credenciales incorrectas'})
+      return res.status(401).json({ message: "Usuario o contraseña incorrectos" });
     }
 
     //CREO UN TOKEN
@@ -74,18 +88,18 @@ export const login = async (req, res) => {
 
     //ENVÍO EL JWT COMO COOKIE
     res.cookie("token", token, {
-      httpOnly: true, // No accesible desde JavaScript
+      ...getAuthCookieOptions(),
       maxAge: 1000 * 60 * 60, // 1 hora
     });
 
     //MENSAJE DE QUE EL USUARIO SE LOGEÓ CORRECTAMENTE
     return res.status(200).json({
-      message: "Logged correctly",
+      message: "Inicio de sesión correcto",
     });
   } catch (err) {
-    console.log("Server error while Loging", err);
+    console.error("Error al iniciar sesión", err);
     return res.status(500).json({
-      message: "Server error while Loging",
+      message: "Error interno del servidor",
     });
   }
 };
@@ -93,7 +107,7 @@ export const login = async (req, res) => {
 export const logout = async (req, res) => {
   try {
     //PARA DESLOGEAR UN USUARIO, BORRO SU COOKIE DEL NAVEGADOR
-    res.clearCookie("token");
+    res.clearCookie("token", getAuthCookieOptions());
     return res.status(200).json({
       message: "You logged out correctly, good bye",
     });

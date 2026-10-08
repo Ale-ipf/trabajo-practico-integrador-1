@@ -6,7 +6,14 @@ import { matchedData } from 'express-validator'
 export const getProfile = async (req, res) => {
   const userLogged = req.userLogged;
   try {
-    const profile = await Profile.findOne({ where: { user_id: userLogged.id } });
+    const profile = await Profile.findOne({
+      where: { user_id: userLogged.id },
+      include: {
+        model: User,
+        attributes: ["username"],
+        as: "user",
+      },
+    });
 
     if (!profile) {
       return res.status(401).json({

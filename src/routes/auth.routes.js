@@ -4,12 +4,15 @@ import { getProfile, updateProfile } from "../controllers/profile.controller.js"
 import { authMiddleware } from "../middlewares/auth.js";
 import { updateProfileValidations } from "../middlewares/validations/profile.validations.js";
 import { applyValidations } from "../middlewares/validator.js";
-import { createUserValidations } from "../middlewares/validations/user.validations.js";
+import {
+  createUserValidations,
+  loginValidations,
+} from "../middlewares/validations/user.validations.js";
 
 const authRouter = Router();
 
 authRouter.post("/api/auth/register", createUserValidations, applyValidations, register);
-authRouter.post("/api/auth/login", login);
+authRouter.post("/api/auth/login", loginValidations, applyValidations, login);
 authRouter.get("/api/auth/profile", authMiddleware, getProfile);
 authRouter.put("/api/auth/profile", authMiddleware, updateProfileValidations, applyValidations, updateProfile);
 authRouter.post("/api/auth/logout", authMiddleware, logout);
